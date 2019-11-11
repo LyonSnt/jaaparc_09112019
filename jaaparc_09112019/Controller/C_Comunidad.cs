@@ -20,9 +20,19 @@ namespace Controller
             return tabla;
         }
 
-        public void InsertarC(int idC,string nombreC)
+        public void InsertarC(string nombreC)
         {
-            objetoM.InsertarM(idC, nombreC);
+            objetoM.InsertarM(nombreC);
+        }
+
+        public void ActualizarC( string nombreC, string idC)
+        {
+            objetoM.ActualizarM(nombreC, Convert.ToInt32(idC));
+        }
+
+        public void EliminarC(string idC)
+        {
+            objetoM.EliminarM(Convert.ToInt32(idC));
         }
     }
 }

@@ -32,12 +32,28 @@ namespace Modelo
             return tabla;
         }
 
-        public void InsertarM(int id,string nombre)
+        public void InsertarM(string nombre)
         {
             comando.Connection = conectarC.AbrirConexion();
-            comando.CommandText = "insert into comunidad values ("+id+",'"+nombre+"')";
+            comando.CommandText = "insert into comunidad (com_nombre) values ('"+nombre+"')";
             comando.ExecuteNonQuery();
-            leer = comando.ExecuteReader();
+        }
+
+        public void ActualizarM(string nombre, int id)
+        {
+            comando.Connection = conectarC.AbrirConexion();
+          //  comando.CommandText = "update  comunidad set com_id = " + id + ", com_nombre = '" + nombre + "' where com_id = '" + id + "'";
+            comando.CommandText = "update  comunidad set com_nombre = '" + nombre + "' where com_id = '" + id + "'";
+
+            comando.ExecuteNonQuery();
+        }
+
+
+        public void EliminarM(int idM)
+        {
+            comando.Connection = conectarC.AbrirConexion();
+            comando.CommandText = "delete from comunidad where com_id = (" + idM + ")";
+            comando.ExecuteNonQuery();
         }
 
     }

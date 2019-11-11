@@ -15,6 +15,9 @@ namespace View
     {
         C_Comunidad objetoC = new C_Comunidad();
 
+        private string idComunidad = null;
+        private bool editar = false;
+
         public Form1()
         {
             InitializeComponent();
@@ -27,22 +30,80 @@ namespace View
 
         public void MostrarComunidad()
         {
-            tablaresul.DataSource = objetoC.MostarC();
+            C_Comunidad objetoCActualizar = new C_Comunidad(); //ESTO ES PARA QUE ACTUALICE LOS REGISTROS EN EL DATA GRID...SI QUITAMPS ESTO LOS DATOS SE REFLEJAN DUPLICADOS
+            tablaresul.DataSource = objetoCActualizar.MostarC();
         }
 
         private void btnIn_Click(object sender, EventArgs e)
         {
-            try
+            //INSERTAR
+            if (editar == false)
             {
-                objetoC.InsertarC(27,txtComu.Text);
-                MessageBox.Show("regisrro correcto");
-                MostrarComunidad();
-            }catch(Exception ex)
-            {
-                MessageBox.Show("no se pudo por :" +ex);
+                try
+                {
+                    objetoC.InsertarC(txtComu.Text);
+                    MessageBox.Show("regisrro correcto");
+                    MostrarComunidad();
+                    LimpiarCaja();
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show("no se pudo por :" + ex);
+                }
             }
-
+            //EDITAR
+            if (editar == true)
+            {
+                try
+                {
+                    objetoC.ActualizarC(txtComu.Text, idComunidad);
+                    MessageBox.Show("se edito correctamente");
+                    MostrarComunidad();
+                    LimpiarCaja();
+                    editar=false;
+                }
+                catch(Exception ex)
+                {
+                    MessageBox.Show("No se pudo editar los datos por: " + ex);
+                }
+            }
             
+        }
+
+        private void btnEditar_Click(object sender, EventArgs e)
+        {
+            if(tablaresul.SelectedRows.Count > 0)
+            {
+                editar = true;
+                txtComu.Text = tablaresul.CurrentRow.Cells["com_nombre"].Value.ToString();
+                idComunidad = tablaresul.CurrentRow.Cells["com_id"].Value.ToString();
+                lblcomid.Text = tablaresul.CurrentRow.Cells["com_id"].Value.ToString();
+
+            }
+            else
+            {
+                MessageBox.Show("Seleccione la fila");
+            }
+        }
+
+        public void LimpiarCaja()
+        {
+            txtComu.Clear();
+        }
+
+        private void btnEliminar_Click(object sender, EventArgs e)
+        {
+            if(tablaresul.SelectedRows.Count > 0)
+            {
+                idComunidad = tablaresul.CurrentRow.Cells["com_id"].Value.ToString();
+                objetoC.EliminarC(idComunidad);
+                MessageBox.Show("eliminado correctamente");
+                MostrarComunidad();
+            }
+            else
+            {
+                MessageBox.Show("selecccione una fila por favor");
+            }
         }
     }
 }
