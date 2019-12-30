@@ -1,38 +1,30 @@
 ﻿using Modelo;
 using System;
-using System.Collections.Generic;
 using System.Data;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Controller
 {
     public class C_Comunidad
     {
 
+        private Conexion conexion = new Conexion();
         private M_Comunidad objetoM = new M_Comunidad();
 
-        public DataTable MostarC()
+
+        public DataTable ConsultarComboC()
         {
-            DataTable tabla = new DataTable();
-            tabla = objetoM.MostrarM();
-            return tabla;
+            try
+            {
+                conexion.AbrirConexion();
+                objetoM.conecc = conexion;
+                return objetoM.ConsultarComboM();
+            }
+            catch (Exception e)
+            {
+                throw e;
+            }
+            finally { conexion.CerrarConexion(); }
         }
 
-        public void InsertarC(string nombreC)
-        {
-            objetoM.InsertarM(nombreC);
-        }
-
-        public void ActualizarC( string nombreC, string idC)
-        {
-            objetoM.ActualizarM(nombreC, Convert.ToInt32(idC));
-        }
-
-        public void EliminarC(string idC)
-        {
-            objetoM.EliminarM(Convert.ToInt32(idC));
-        }
     }
 }
